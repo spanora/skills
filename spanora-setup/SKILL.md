@@ -27,7 +27,25 @@ Activate this skill when the user says any of:
 - "instrument my agent", "add tracing to my agent"
 - mentions "spanora" in the context of adding observability
 
-## 2. Prerequisites
+## 2. Public Documentation — Source of Truth
+
+The official Spanora documentation at **https://spanora.ai/docs** is always up to date and is the canonical source of truth. The bundled `references/` files in this skill are the primary step-by-step guide, but **if you encounter ambiguity, an unfamiliar API, edge cases, or something that doesn't match what you see in the user's code — fetch the relevant doc page** using WebFetch. If the public docs contradict a bundled reference, the public docs win.
+
+**Key pages by integration pattern:**
+
+| Pattern | Doc page |
+| --- | --- |
+| Vercel AI SDK | https://spanora.ai/docs/integrations/vercel-ai |
+| OpenAI SDK | https://spanora.ai/docs/integrations/openai |
+| Anthropic SDK | https://spanora.ai/docs/integrations/anthropic |
+| LangChain Python | https://spanora.ai/docs/integrations/langchain |
+| Raw OTEL / other | https://spanora.ai/docs/integrations/raw-otel |
+| TypeScript SDK reference | https://spanora.ai/docs/sdk |
+| OTEL attribute conventions | https://spanora.ai/docs/sdk/attributes |
+
+You do **not** need to fetch docs on every run — only when something is unclear or you suspect the bundled references may be stale.
+
+## 3. Prerequisites
 
 The user must provide a **Spanora API key** (starts with `ak_`). Check if one already exists:
 
@@ -39,7 +57,7 @@ The user must provide a **Spanora API key** (starts with `ak_`). Check if one al
    SPANORA_API_KEY=ak_...
    ```
 
-## 3. Language Detection
+## 4. Language Detection
 
 Determine the project language by checking for config files in the project root:
 
@@ -52,7 +70,7 @@ Determine the project language by checking for config files in the project root:
 
 If both JS and Python files are present, ask the user which part of the project to instrument.
 
-## 4. Detection — Determine the Integration Pattern
+## 5. Detection — Determine the Integration Pattern
 
 ### JavaScript / TypeScript
 
@@ -77,7 +95,7 @@ Read `pyproject.toml` (or `requirements.txt` / `setup.py`) and check dependencie
 
 More Python patterns may be added in the future. If the user's Python project does not use LangChain, inform them that Spanora supports any Python framework via raw OpenTelemetry — refer them to the LangChain reference as a template for OTEL setup.
 
-## 5. Package Manager Detection
+## 6. Package Manager Detection
 
 ### JavaScript / TypeScript
 
@@ -97,7 +115,7 @@ More Python patterns may be added in the future. If the user's Python project do
 | `Pipfile.lock` | `pipenv`        |
 | Otherwise      | `pip`           |
 
-## 6. Install
+## 7. Install
 
 ### JavaScript / TypeScript
 
@@ -115,7 +133,7 @@ pip install opentelemetry-sdk opentelemetry-exporter-otlp opentelemetry-instrume
 
 No Spanora SDK is needed for Python — tracing uses standard OpenTelemetry.
 
-## 7. Integration — Read the Matching Reference
+## 8. Integration — Read the Matching Reference
 
 Based on the detected pattern, read the corresponding reference file for code examples and API usage:
 
@@ -134,7 +152,7 @@ Based on the detected pattern, read the corresponding reference file for code ex
 
 Apply the patterns from the reference files to the user's code. The reference files contain production-ready examples verified against the SDK source and integration tests.
 
-## 8. Ensure Full Instrumentation Coverage
+## 9. Ensure Full Instrumentation Coverage
 
 **Every AI execution must produce at least one trace.** For each LLM call site in the user's code, use the highest-fidelity approach available:
 
@@ -144,7 +162,7 @@ Apply the patterns from the reference files to the user's code. The reference fi
 
 After applying the base integration, scan the user's code for any LLM call that would not produce a span. If found, wrap it with the appropriate tracking function from the list above. Do not leave blind spots.
 
-## 9. Offer Optional Enrichments
+## 10. Offer Optional Enrichments
 
 After applying the base integration, **mention** these optional features to the user. Do not add them by default — only include them if the user's code has the relevant context available or the user asks for them:
 
