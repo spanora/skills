@@ -123,13 +123,17 @@ Use descriptive, purpose-based names. The `agent` appears in the Spanora dashboa
 
 ## API Key Setup
 
+> **Security rule:** Never ask the user to paste any API key into the conversation, and never write a real key value to any file. Only check for the **presence** of a key — do not output or log its value.
+
 ### Spanora API Key
 
-Required for sending traces. Store in `.env`:
+Required for sending traces. The user must add it to `.env` themselves:
 
 ```
-SPANORA_API_KEY=ak_your_api_key
+SPANORA_API_KEY=<user adds their key here>
 ```
+
+If `SPANORA_API_KEY` is not set, direct the user to add it: **"Please add your Spanora API key to your `.env` file as `SPANORA_API_KEY=ak_...`. You can find your key at https://spanora.ai/settings."**
 
 If `.env` is not in `.gitignore`, remind the user to add it.
 
@@ -140,14 +144,6 @@ Do not ask for these — just inform the user if they appear to be missing:
 - **OpenAI SDK** → needs `OPENAI_API_KEY` in `.env`
 - **Anthropic SDK** → needs `ANTHROPIC_API_KEY` in `.env`
 - **Vercel AI SDK** → depends on the provider used (e.g. `OPENAI_API_KEY` for OpenAI provider)
-
-Example `.env`:
-
-```
-SPANORA_API_KEY=ak_...
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-```
 
 ## Migration Checklist
 

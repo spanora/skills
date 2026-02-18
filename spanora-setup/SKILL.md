@@ -47,15 +47,15 @@ You do **not** need to fetch docs on every run — only when something is unclea
 
 ## 3. Prerequisites
 
-The user must provide a **Spanora API key** (starts with `ak_`). Check if one already exists:
+The user must have a **Spanora API key** (starts with `ak_`). **Never ask the user to paste their API key into the conversation.**
 
-1. Read `.env` (or `.env.local`) in the project root.
-2. If `SPANORA_API_KEY` is already set, use it and skip asking.
-3. If not, ask the user: **"What is your Spanora API key?"**
-4. Store it in `.env` as:
-   ```
-   SPANORA_API_KEY=ak_...
-   ```
+1. Check if `SPANORA_API_KEY` is already set in `.env` (or `.env.local`) or as a shell environment variable. Only check for **presence** — do **not** output or log the value.
+2. If already set, proceed to the next step.
+3. If not set, instruct the user to add it themselves:
+   - Tell them: **"Please add your Spanora API key to your `.env` file as `SPANORA_API_KEY=ak_...`. You can find your key at https://spanora.ai/settings."**
+   - Do **not** accept the key in conversation or write the key value to any file.
+   - Wait for the user to confirm they have set it before proceeding.
+4. If `.env` is not in `.gitignore`, remind the user to add it.
 
 ## 4. Language Detection
 
